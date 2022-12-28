@@ -14,7 +14,7 @@ interface CryptoTicketInterface {
 
 error Roulette__OwnerFailure();
 error Roulette__TransferFailure();
-error Roulette__OwnerRightsFailure();
+error Roulette__TicketOwnerFailure();
 error Roulette__DetectedFailure();
 error Roulette__ZeroingFailure();
 error Roulette__OutOfRangeBet();
@@ -144,7 +144,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteStraight(uint256 tokenId, uint64 number) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractStraight);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (number < 0 || number > 36) {
             revert Roulette__OutOfRangeBet();
         } else {
@@ -158,7 +158,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteSplit(uint256 tokenId, uint64 firstNum, uint64 secondNum) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractSplit);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (firstNum == 0) {
             require(secondNum == 3 || secondNum ==2 || secondNum == 1, "");
         } else if (secondNum == 0) {
@@ -255,7 +255,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteStreet(uint256 tokenId, uint64 line) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractStreet);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (line == 1) {
             playersNum = line1;
         } else if (line == 2) {
@@ -288,7 +288,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteCorner(uint256 tokenId, uint32 numberOfCorner) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractCorner);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         }
         require(numberOfCorner == 0 ||
                 numberOfCorner == 1 ||
@@ -329,7 +329,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteBascet(uint256 tokenId, uint8 firstNum, uint8 secondNum) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractBascet);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (firstNum == 1) {
             require(secondNum != 3);
         } else if (firstNum == 3) {
@@ -356,7 +356,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function entreRouletteSixLine(uint256 tokenId, uint64 numberOfSixLine) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractSixLine);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (numberOfSixLine == 1) {
             playersNum = dLine1;
         } else if (numberOfSixLine == 2) {
@@ -387,7 +387,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteFirstFour(uint256 tokenId) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractFirstFour);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         }
         playersNum = firstFour;
         roulette();
@@ -397,7 +397,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteLowOrHIgh(uint256 tokenId, uint256 lowOrHigh) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractLowOrHigh);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (lowOrHigh >= 0) {
             require(lowOrHigh <= 18, "");
             playersNum = low;
@@ -412,7 +412,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteRedOrBlack(uint256 tokenId, uint8 redOrBlack) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractRedOrBlack);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (redOrBlack == 0) {
             playersNum = redNums;
         } else if (redOrBlack == 1) {
@@ -425,7 +425,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteEvenOrOdd(uint256 tokenId, uint8 evenOrOdd) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractEvenOrOdd);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (evenOrOdd % 2 == 0) {
             playersNum = evenNums;
         } else if (evenOrOdd % 2 != 0) {
@@ -438,7 +438,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteDozens(uint256 tokenId, uint8 dozen) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractDozens);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (dozen == 1) {
             playersNum = firstDozen;
         } else if (dozen == 2) {
@@ -453,7 +453,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteColumns(uint256 tokenId, uint8 column) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractColumns);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         } else if (column == 1) {
             playersNum = column1;
         } else if (column == 2) {
@@ -468,7 +468,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     function enterRouletteSnake(uint256 tokenId) public {
         CryptoTicketInterface cti = CryptoTicketInterface(contractSnake);
         if (cti.ownerOf(tokenId) != msg.sender) {
-            revert Roulette__OwnerRightsFailure();
+            revert Roulette__TicketOwnerFailure();
         }
         playersNum = snake;
         roulette();
