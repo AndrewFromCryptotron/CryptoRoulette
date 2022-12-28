@@ -98,12 +98,21 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
     address[] private deprecatedContracts;
     bool private failure = false;
 
-    event HeadsEnter(address indexed headsPlayer);
-    event TailsEnter(address indexed tailsPlayer);
     event WinnerPicked(address indexed winner);
-    event RequestedCryptoFlipWinner(uint256 indexed requestId);
-    event AddressChanged(address indexed newAddress);
-    event NewFunder(address indexed funder);
+    event RequestedRouletteWinner(uint256 indexed requestId);
+    event EnteredStraight(address indexed player);
+    event EnteredSplit(address indexed player);
+    event EnteredStreet(address indexed player);
+    event EnteredCorner(address indexed player);
+    event EnteredBascet(address indexed player);
+    event EnteredSixLine(address indexed player);
+    event EnteredFirstFour(address indexed player);
+    event EnteredLowOrHigh(address indexed player);
+    event EnteredRedOrBlack(address indexed player);
+    event EnteredEvenOrOdd(address indexed player);
+    event EnteredDozens(address indexed player);
+    event EnteredColumns(address indexed player);
+    event EnteredSnake(address indexed player);
 
     constructor(
         bytes32 gasLane,
@@ -143,6 +152,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum.push(number);
             roulette();
         }
+        emit EnteredStraight(msg.sender);
     }
 
     function enterRouletteSplit(uint256 tokenId, uint64 firstNum, uint64 secondNum) public {
@@ -239,6 +249,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
                                                                                                  playersNum.push(firstNum);
                                                                                                  playersNum.push(secondNum);
                                                                                                  roulette();
+                                                                                                 emit EnteredSplit(msg.sender);
     }
 
     function enterRouletteStreet(uint256 tokenId, uint64 line) public {
@@ -271,6 +282,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum = line12;
         }
         roulette();
+        emit EnteredStreet(msg.sender);
     }
 
     function enterRouletteCorner(uint256 tokenId, uint32 numberOfCorner) public {
@@ -311,6 +323,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
         playersNum.push(thirdNum);
         playersNum.push(fourthNum);
         roulette();
+        emit EnteredCorner(msg.sender);
     }
 
     function enterRouletteBascet(uint256 tokenId, uint8 firstNum, uint8 secondNum) public {
@@ -337,6 +350,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
         playersNum.push(secondNum);
         playersNum.push(thirdNum);
         roulette();
+        emit EnteredBascet(msg.sender);
     }
 
     function entreRouletteSixLine(uint256 tokenId, uint64 numberOfSixLine) public {
@@ -367,6 +381,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum = dLine11;
         }
         roulette();
+        emit EnteredSixLine(msg.sender);
     }
 
     function enterRouletteFirstFour(uint256 tokenId) public {
@@ -376,6 +391,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
         }
         playersNum = firstFour;
         roulette();
+        emit EnteredFirstFour(msg.sender);
     }
 
     function enterRouletteLowOrHIgh(uint256 tokenId, uint256 lowOrHigh) public {
@@ -390,6 +406,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum = high;
         }
         roulette();
+        emit EnteredLowOrHigh(msg.sender);
     }
 
     function enterRouletteRedOrBlack(uint256 tokenId, uint8 redOrBlack) public {
@@ -402,6 +419,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum = blackNums;
         }
         roulette();
+        emit EnteredRedOrBlack(msg.sender);
     }
 
     function enterRouletteEvenOrOdd(uint256 tokenId, uint8 evenOrOdd) public {
@@ -414,6 +432,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum = oddNums;
         }
         roulette();
+        emit EnteredEvenOrOdd(msg.sender);
     }
 
     function enterRouletteDozens(uint256 tokenId, uint8 dozen) public {
@@ -428,6 +447,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum = thirdDozen;
         }
         roulette();
+        emit EnteredDozens(msg.sender);
     }
 
     function enterRouletteColumns(uint256 tokenId, uint8 column) public {
@@ -442,6 +462,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             playersNum = column3;
         }
         roulette();
+        emit EnteredColumns(msg.sender);
     }
 
     function enterRouletteSnake(uint256 tokenId) public {
@@ -451,6 +472,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
         }
         playersNum = snake;
         roulette();
+        emit EnteredSnake(msg.sender);
     }
 
     function roulette() internal {
@@ -462,7 +484,7 @@ contract CryptotronRoulette is VRFConsumerBaseV2 {
             i_callbackGasLimit,
             NUM_WORDS
         );
-        emit RequestedCryptoFlipWinner(requestId);
+        emit RequestedRouletteWinner(requestId);
     }
 
     function fulfillRandomWords(
